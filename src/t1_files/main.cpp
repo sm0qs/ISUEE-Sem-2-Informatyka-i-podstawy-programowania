@@ -49,20 +49,6 @@ void printFile(std::ifstream &file) {
 	resetFileState(file);
 }
 
-void validateFile(std::ifstream &file) {
-	long double number;
-
-	while (file >> number) {
-	}
-
-	if (file.fail() && !file.eof()) {
-		resetFileState(file);
-		throw std::string("File contains non-numeric data.");
-	}
-
-	resetFileState(file);
-}
-
 long double averageFile(std::ifstream &file) {
 	long double sum = 0;
 	int count = 0;
@@ -73,7 +59,11 @@ long double averageFile(std::ifstream &file) {
 		count++;
 	}
 
-	if (count == 0) {
+	if (file.fail() && !file.eof()) {
+		resetFileState(file);
+		throw std::string("File contains non-numeric data.");
+	} else if (count == 0) {
+		resetFileState(file);
 		throw std::string("File is empty.");
 	}
 
@@ -93,7 +83,6 @@ int main() {
 		std::ifstream file = openFile(path);
 
 		printFile(file);
-		validateFile(file);
 		printAverage(file);
 
 		file.close();
