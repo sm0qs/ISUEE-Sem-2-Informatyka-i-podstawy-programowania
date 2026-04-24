@@ -63,6 +63,28 @@ void validateFile(std::ifstream &file) {
 	resetFileState(file);
 }
 
+long double averageFile(std::ifstream &file) {
+	long double sum = 0;
+	int count = 0;
+	long double number;
+
+	while (file >> number) {
+		sum = sum + number;
+		count++;
+	}
+
+	if (count == 0) {
+		throw std::string("File is empty.");
+	}
+
+	resetFileState(file);
+	return sum / count;
+}
+
+void printAverage(std::ifstream &file) {
+	std::cout << "Average: " << averageFile(file) << std::endl;
+}
+
 int main() {
 	try {
 		std::string path = getPath();
@@ -72,6 +94,7 @@ int main() {
 
 		printFile(file);
 		validateFile(file);
+		printAverage(file);
 
 		file.close();
 
