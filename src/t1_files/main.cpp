@@ -41,7 +41,7 @@ void resetFileState(std::ifstream &file) {
 
 void printFile(std::ifstream &file) {
 	std::string line;
-	std::cout << "--- File Contents ---" << std::endl;
+	std::cout << "--- File Content ---" << std::endl;
 	while (std::getline(file, line)) {
 		std::cout << line << std::endl;
 	}
