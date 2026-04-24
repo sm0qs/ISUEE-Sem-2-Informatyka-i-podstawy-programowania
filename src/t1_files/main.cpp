@@ -34,12 +34,23 @@ std::ifstream openFile(const std::string &path) {
 	return file;
 }
 
+void printFile(std::istream &file) {
+	std::string line;
+	std::cout << "--- File Contents ---" << std::endl;
+	while (std::getline(file, line)) {
+		std::cout << line << std::endl;
+	}
+	std::cout << "--- End of File ---" << std::endl;
+}
+
 int main() {
 	try {
 		std::string path = getPath();
 		createFileIfNotExists(path);
 
 		std::ifstream file = openFile(path);
+
+		printFile(file);
 
 	} catch (const std::string &e) {
 		std::cerr << "Error: " << e << std::endl;
