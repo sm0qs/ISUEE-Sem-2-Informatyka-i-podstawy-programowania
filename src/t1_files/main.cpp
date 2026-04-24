@@ -25,10 +25,21 @@ void createFileIfNotExists(const std::string &path) {
 	file.close();
 }
 
+std::ifstream openFile(const std::string &path) {
+	std::ifstream file(path);
+
+	if (!file.is_open()) {
+		throw std::string("Failed to open file at: " + path);
+	}
+	return file;
+}
+
 int main() {
 	try {
 		std::string path = getPath();
 		createFileIfNotExists(path);
+
+		std::ifstream file = openFile(path);
 
 	} catch (const std::string &e) {
 		std::cerr << "Error: " << e << std::endl;
