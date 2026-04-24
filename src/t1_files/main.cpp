@@ -1,6 +1,6 @@
 #include <iostream>
 
 int main() {
-	std::cout << "Hello world!" << std::endl;
+	std::cout << "Test 1 - files";
 	return 0;
 }
