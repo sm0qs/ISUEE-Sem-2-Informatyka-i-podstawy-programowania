@@ -8,9 +8,20 @@ std::string getPath() {
 	return path;
 }
 
-void createFileIfNotExists(const std::string &path) {
+std::ifstream openFile(const std::string &path) {
 	std::ifstream file(path);
-	if (!file.good()) {
+
+	if (!file.is_open()) {
+		throw std::string("Failed to open file at: " + path);
+	}
+	return file;
+}
+
+void createFileIfNotExists(const std::string &path) {
+	try {
+		std::ifstream file = openFile(path);
+		file.close();
+	} catch (...) {
 		std::cout << "File does not exist. Creating new file at: " << path << std::endl;
 		std::ofstream newFile(path);
 		if (!newFile.is_open()) {
@@ -21,17 +32,6 @@ void createFileIfNotExists(const std::string &path) {
 		newFile << "789" << std::endl;
 		newFile.close();
 	}
-
-	file.close();
-}
-
-std::ifstream openFile(const std::string &path) {
-	std::ifstream file(path);
-
-	if (!file.is_open()) {
-		throw std::string("Failed to open file at: " + path);
-	}
-	return file;
 }
 
 void printFile(std::istream &file) {
