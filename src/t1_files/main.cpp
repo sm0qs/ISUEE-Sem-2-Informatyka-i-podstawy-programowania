@@ -34,13 +34,33 @@ void createFileIfNotExists(const std::string &path) {
 	}
 }
 
-void printFile(std::istream &file) {
+void resetFileState(std::ifstream &file) {
+	file.clear();
+	file.seekg(0, std::ios::beg);
+}
+
+void printFile(std::ifstream &file) {
 	std::string line;
 	std::cout << "--- File Contents ---" << std::endl;
 	while (std::getline(file, line)) {
 		std::cout << line << std::endl;
 	}
 	std::cout << "--- End of File ---" << std::endl;
+	resetFileState(file);
+}
+
+void validateFile(std::ifstream &file) {
+	long double number;
+
+	while (file >> number) {
+	}
+
+	if (file.fail() && !file.eof()) {
+		resetFileState(file);
+		throw std::string("File contains non-numeric data.");
+	}
+
+	resetFileState(file);
 }
 
 int main() {
@@ -51,6 +71,9 @@ int main() {
 		std::ifstream file = openFile(path);
 
 		printFile(file);
+		validateFile(file);
+
+		file.close();
 
 	} catch (const std::string &e) {
 		std::cerr << "Error: " << e << std::endl;
