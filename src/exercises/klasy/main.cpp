@@ -8,6 +8,12 @@ class Samochod {
 	double przebieg;
 
   public:
+	Samochod() : marka("nieznana"), model("nieznany"), rocznik(0), przebieg(0.0) {}
+
+	Samochod(const std::string &marka, const std::string &model, unsigned int rocznik,
+			 double przebieg)
+		: marka(marka), model(model), rocznik(rocznik), przebieg(przebieg) {}
+
 	void setMarka(const std::string &marka) { this->marka = marka; }
 	std::string getMarka() const { return marka; }
 
@@ -21,10 +27,12 @@ class Samochod {
 	double getPrzebieg() const { return przebieg; }
 
 	void wypisz() {
-		std::cout << "Marka: " << marka << std::endl;
-		std::cout << "Model: " << model << std::endl;
-		std::cout << "Rocznik: " << rocznik << std::endl;
-		std::cout << "Przebieg: " << przebieg << std::endl;
+		std::cout << "/-- Informacje o samochodzie: ---" << std::endl;
+		std::cout << "| Marka: " << marka << std::endl;
+		std::cout << "| Model: " << model << std::endl;
+		std::cout << "| Rocznik: " << rocznik << std::endl;
+		std::cout << "| Przebieg: " << przebieg << std::endl;
+		std::cout << "\\--------------------------------" << std::endl;
 	}
 };
 
@@ -37,4 +45,9 @@ int main() {
 	s.setPrzebieg(150000);
 
 	s.wypisz();
+
+	Samochod s2("Toyota", "Corolla", 2018, 50000);
+	s2.wypisz();
+
+	return 0;
 }
