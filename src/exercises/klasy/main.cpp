@@ -1,60 +1,59 @@
 #include <fstream>
 #include <iostream>
 
-class Samochod {
+class Car {
   private:
-	std::string marka;
+	std::string brand;
 	std::string model;
-	unsigned int rocznik;
-	double przebieg;
-	static int ileObiektow;
+	unsigned int year;
+	double mileage;
+	static int items;
 
   public:
-	Samochod() : marka("nieznana"), model("nieznany"), rocznik(0), przebieg(0.0) { ileObiektow++; }
+	Car() : brand("unknown"), model("unknown"), year(0), mileage(0.0) { items++; }
 
-	Samochod(const std::string &marka, const std::string &model, unsigned int rocznik,
-			 double przebieg)
-		: marka(marka), model(model), rocznik(rocznik), przebieg(przebieg) {
-		ileObiektow++;
+	Car(const std::string &brand, const std::string &model, unsigned int year, double mileage)
+		: brand(brand), model(model), year(year), mileage(mileage) {
+		items++;
 	}
 
-	Samochod(const std::string path) {
+	Car(const std::string path) {
 		std::ifstream file(path);
 		if (!file.is_open()) {
-			throw std::string("Nie można otworzyć pliku");
+			throw std::string("Cannot open file");
 		}
-		file >> marka >> model >> rocznik >> przebieg;
+		file >> brand >> model >> year >> mileage;
 		file.close();
-		ileObiektow++;
+		items++;
 	}
 
-	~Samochod() { ileObiektow--; }
+	~Car() { items--; }
 
-	void setMarka(const std::string &marka) { this->marka = marka; }
-	std::string getMarka() const { return marka; }
+	void setBrand(const std::string &brand) { this->brand = brand; }
+	std::string getBrand() const { return brand; }
 
 	void setModel(const std::string &model) { this->model = model; }
 	std::string getModel() const { return model; }
 
-	void setRocznik(unsigned int rocznik) { this->rocznik = rocznik; }
-	unsigned int getRocznik() const { return rocznik; }
+	void setYear(unsigned int year) { this->year = year; }
+	unsigned int getYear() const { return year; }
 
-	void setPrzebieg(double przebieg) { this->przebieg = przebieg; }
-	double getPrzebieg() const { return przebieg; }
+	void setMileage(double mileage) { this->mileage = mileage; }
+	double getMileage() const { return mileage; }
 
-	int getIleObiektow() const { return ileObiektow; }
+	int getItems() const { return items; }
 
-	void wypisz() {
-		std::cout << "/-- Informacje o samochodzie: ---" << std::endl;
-		std::cout << "| Marka: " << marka << std::endl;
+	void printInfo() {
+		std::cout << "/--------- Car Info: ---------" << std::endl;
+		std::cout << "| Brand: " << brand << std::endl;
 		std::cout << "| Model: " << model << std::endl;
-		std::cout << "| Rocznik: " << rocznik << std::endl;
-		std::cout << "| Przebieg: " << przebieg << std::endl;
-		std::cout << "\\--------------------------------" << std::endl;
+		std::cout << "| Year: " << year << std::endl;
+		std::cout << "| Mileage: " << mileage << std::endl;
+		std::cout << "\\----------------------------" << std::endl;
 	}
 };
 
-int Samochod::ileObiektow = 0;
+int Car::items = 0;
 
 std::string getPath() {
 	std::string path;
@@ -89,20 +88,20 @@ void createFileIfNotExists(const std::string &path) {
 
 int main() {
 	try {
-		Samochod samochod1;
-		samochod1.setMarka("Skoda");
-		samochod1.setModel("Fabia");
-		samochod1.setRocznik(2015);
-		samochod1.setPrzebieg(150000);
-		samochod1.wypisz();
+		Car car1;
+		car1.setBrand("Skoda");
+		car1.setModel("Fabia");
+		car1.setYear(2015);
+		car1.setMileage(150000);
+		car1.printInfo();
 
-		Samochod samochod2("Toyota", "Corolla", 2018, 50000);
-		samochod2.wypisz();
+		Car car2("Toyota", "Corolla", 2018, 50000);
+		car2.printInfo();
 
 		std::string path = getPath();
 		createFileIfNotExists(path);
-		Samochod samochod3(path);
-		samochod3.wypisz();
+		Car car3(path);
+		car3.printInfo();
 
 	} catch (const std::string &e) {
 		std::cerr << "Error: " << e << std::endl;
