@@ -1,6 +1,14 @@
 #include <fstream>
 #include <iostream>
 
+std::ifstream openFile(const std::string &path) {
+	std::ifstream file(path);
+	if (!file.is_open()) {
+		throw std::string("Failed to open file at: " + path);
+	}
+	return file;
+}
+
 class Car {
   private:
 	std::string brand;
@@ -18,10 +26,7 @@ class Car {
 	}
 
 	Car(const std::string path) {
-		std::ifstream file(path);
-		if (!file.is_open()) {
-			throw std::string("Cannot open file");
-		}
+		std::ifstream file = openFile(path);
 		file >> brand >> model >> year >> mileage;
 		file.close();
 		items++;
@@ -60,14 +65,6 @@ std::string getPath() {
 	std::cout << "Insert path: ";
 	std::cin >> path;
 	return path;
-}
-
-std::ifstream openFile(const std::string &path) {
-	std::ifstream file(path);
-	if (!file.is_open()) {
-		throw std::string("Failed to open file at: " + path);
-	}
-	return file;
 }
 
 void createFileIfNotExists(const std::string &path) {
