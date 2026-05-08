@@ -1,3 +1,4 @@
+#include <fstream>
 #include <iostream>
 
 class Samochod {
@@ -14,6 +15,16 @@ class Samochod {
 	Samochod(const std::string &marka, const std::string &model, unsigned int rocznik,
 			 double przebieg)
 		: marka(marka), model(model), rocznik(rocznik), przebieg(przebieg) {
+		ileObiektow++;
+	}
+
+	Samochod(const std::string path) {
+		std::ifstream file(path);
+		if (!file.is_open()) {
+			throw std::string("Nie można otworzyć pliku");
+		}
+		file >> marka >> model >> rocznik >> przebieg;
+		file.close();
 		ileObiektow++;
 	}
 
@@ -45,16 +56,35 @@ class Samochod {
 
 int Samochod::ileObiektow = 0;
 
-int main() {
-	Samochod samochod1;
-	samochod1.setMarka("Skoda");
-	samochod1.setModel("Fabia");
-	samochod1.setRocznik(2015);
-	samochod1.setPrzebieg(150000);
-	samochod1.wypisz();
+std::string getPath() {
+	std::string path;
+	std::cout << "Insert path: ";
+	std::cin >> path;
+	return path;
+}
 
-	Samochod samochod2("Toyota", "Corolla", 2018, 50000);
-	samochod2.wypisz();
+int main() {
+	try {
+		Samochod samochod1;
+		samochod1.setMarka("Skoda");
+		samochod1.setModel("Fabia");
+		samochod1.setRocznik(2015);
+		samochod1.setPrzebieg(150000);
+		samochod1.wypisz();
+
+		Samochod samochod2("Toyota", "Corolla", 2018, 50000);
+		samochod2.wypisz();
+
+		std::string path = getPath();
+
+		Samochod samochod3(path);
+		samochod3.wypisz();
+
+	} catch (const std::string &e) {
+		std::cerr << "Error: " << e << std::endl;
+	} catch (...) {
+		std::cerr << "An unexpected error occurred." << std::endl;
+	}
 
 	return 0;
 }
