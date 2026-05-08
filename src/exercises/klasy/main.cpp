@@ -6,13 +6,18 @@ class Samochod {
 	std::string model;
 	unsigned int rocznik;
 	double przebieg;
+	static int ileObiektow;
 
   public:
-	Samochod() : marka("nieznana"), model("nieznany"), rocznik(0), przebieg(0.0) {}
+	Samochod() : marka("nieznana"), model("nieznany"), rocznik(0), przebieg(0.0) { ileObiektow++; }
 
 	Samochod(const std::string &marka, const std::string &model, unsigned int rocznik,
 			 double przebieg)
-		: marka(marka), model(model), rocznik(rocznik), przebieg(przebieg) {}
+		: marka(marka), model(model), rocznik(rocznik), przebieg(przebieg) {
+		ileObiektow++;
+	}
+
+	~Samochod() { ileObiektow--; }
 
 	void setMarka(const std::string &marka) { this->marka = marka; }
 	std::string getMarka() const { return marka; }
@@ -26,6 +31,8 @@ class Samochod {
 	void setPrzebieg(double przebieg) { this->przebieg = przebieg; }
 	double getPrzebieg() const { return przebieg; }
 
+	int getIleObiektow() const { return ileObiektow; }
+
 	void wypisz() {
 		std::cout << "/-- Informacje o samochodzie: ---" << std::endl;
 		std::cout << "| Marka: " << marka << std::endl;
@@ -36,18 +43,18 @@ class Samochod {
 	}
 };
 
+int Samochod::ileObiektow = 0;
+
 int main() {
-	Samochod s;
+	Samochod samochod1;
+	samochod1.setMarka("Skoda");
+	samochod1.setModel("Fabia");
+	samochod1.setRocznik(2015);
+	samochod1.setPrzebieg(150000);
+	samochod1.wypisz();
 
-	s.setMarka("Skoda");
-	s.setModel("Fabia");
-	s.setRocznik(2015);
-	s.setPrzebieg(150000);
-
-	s.wypisz();
-
-	Samochod s2("Toyota", "Corolla", 2018, 50000);
-	s2.wypisz();
+	Samochod samochod2("Toyota", "Corolla", 2018, 50000);
+	samochod2.wypisz();
 
 	return 0;
 }
