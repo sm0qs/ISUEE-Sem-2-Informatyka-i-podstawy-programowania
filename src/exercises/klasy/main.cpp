@@ -63,6 +63,30 @@ std::string getPath() {
 	return path;
 }
 
+std::ifstream openFile(const std::string &path) {
+	std::ifstream file(path);
+	if (!file.is_open()) {
+		throw std::string("Failed to open file at: " + path);
+	}
+	return file;
+}
+
+void createFileIfNotExists(const std::string &path) {
+	std::ifstream openFile(path);
+	if (!openFile.is_open()) {
+		std::cout << "File does not exist. Creating new file\n";
+		std::ofstream newFile(path);
+		if (!newFile.is_open()) {
+			throw std::string("Failed to create file at: " + path);
+		}
+		newFile << "Citroen" << std::endl;
+		newFile << "C3" << std::endl;
+		newFile << "2012" << std::endl;
+		newFile << "120000" << std::endl;
+		newFile.close();
+	}
+}
+
 int main() {
 	try {
 		Samochod samochod1;
@@ -76,7 +100,7 @@ int main() {
 		samochod2.wypisz();
 
 		std::string path = getPath();
-
+		createFileIfNotExists(path);
 		Samochod samochod3(path);
 		samochod3.wypisz();
 
