@@ -89,13 +89,17 @@ int Square::squareCount = 0;
 int main() {
 	std::cout << "Creating shapes..." << std::endl;
 
-	std::cout << "Rectangle :\n";
+	std::cout << "Rectangle :" << std::endl;
 	Rectangle rect("Rectangle", 20.0, 25.0);
 	rect.print();
 
-	std::cout << "Square :\n";
+	std::cout << "Square :" << std::endl;
 	Square sq("Square", 16.0, 16.0);
 	sq.print();
+
+	std::cout << "Polymorphism test:" << std::endl;
+	Rectangle *wsk = &sq;
+	wsk->print();
 
 	return 0;
 }
