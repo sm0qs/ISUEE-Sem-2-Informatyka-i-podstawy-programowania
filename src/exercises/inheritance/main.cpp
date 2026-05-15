@@ -85,3 +85,17 @@ class Square : public Rectangle {
 int Shape::shapeCount = 0;
 int Rectangle::rectangleCount = 0;
 int Square::squareCount = 0;
+
+int main() {
+	std::cout << "Creating shapes..." << std::endl;
+
+	std::cout << "Rectangle :\n";
+	Rectangle rect("Rectangle", 20.0, 25.0);
+	rect.print();
+
+	std::cout << "Square :\n";
+	Square sq("Square", 16.0, 16.0);
+	sq.print();
+
+	return 0;
+}
