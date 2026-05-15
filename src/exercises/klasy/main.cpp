@@ -9,6 +9,26 @@ std::ifstream openFile(const std::string &path) {
 	return file;
 }
 
+class Date {
+  private:
+	unsigned int year, month, day;
+
+  public:
+	Date() : year(0), month(0), day(0) {}
+	Date(unsigned int year, unsigned int month, unsigned int day)
+		: year(year), month(month), day(day) {}
+
+	friend std::ostream &operator<<(std::ostream &os, const Date &d) {
+		os << d.year << "-" << d.month << "-" << d.day;
+		return os;
+	}
+
+	friend std::istream &operator>>(std::istream &is, Date &d) {
+		is >> d.year >> d.month >> d.day;
+		return is;
+	}
+};
+
 class Car {
   private:
 	std::string brand;
@@ -16,13 +36,22 @@ class Car {
 	unsigned int year;
 	double mileage;
 	static int items;
+	Date *inspections;
 
   public:
-	Car() : brand("unknown"), model("unknown"), year(0), mileage(0.0) { items++; }
+	Car() : brand("unknown"), model("unknown"), year(0), mileage(0.0) {
+		items++;
+		inspections = new Date[20];
+
+		for (int i = 0; i < 20; i++) {
+			inspections[i] = Date();
+		}
+	}
 
 	Car(const std::string &brand, const std::string &model, unsigned int year, double mileage)
 		: brand(brand), model(model), year(year), mileage(mileage) {
 		items++;
+		inspections = new Date[20];
 	}
 
 	Car(const std::string path) {
@@ -30,9 +59,36 @@ class Car {
 		file >> brand >> model >> year >> mileage;
 		file.close();
 		items++;
+		inspections = new Date[20];
 	}
 
-	~Car() { items--; }
+	Car(const Car &other)
+		: brand(other.brand), model(other.model), year(other.year), mileage(other.mileage) {
+		items++;
+		inspections = new Date[20];
+		for (int i = 0; i < 20; i++) {
+			inspections[i] = other.inspections[i];
+		}
+	}
+
+	Car &operator=(const Car &other) {
+		if (this != &other) {
+			brand = other.brand;
+			model = other.model;
+			year = other.year;
+			mileage = other.mileage;
+
+			for (int i = 0; i < 20; i++) {
+				inspections[i] = other.inspections[i];
+			}
+		}
+		return *this;
+	}
+
+	~Car() {
+		delete[] inspections;
+		items--;
+	}
 
 	void setBrand(const std::string &brand) { this->brand = brand; }
 	std::string getBrand() const { return brand; }
@@ -46,7 +102,7 @@ class Car {
 	void setMileage(double mileage) { this->mileage = mileage; }
 	double getMileage() const { return mileage; }
 
-	int getItems() const { return items; }
+	static int getItems() { return items; }
 
 	void printInfo() {
 		std::cout << "/--------- Car Info: ---------" << std::endl;
