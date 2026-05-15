@@ -86,20 +86,24 @@ int Shape::shapeCount = 0;
 int Rectangle::rectangleCount = 0;
 int Square::squareCount = 0;
 
+void printTab(Shape **tab, int tabSize) {
+	for (int i = 0; i < tabSize; ++i) {
+		tab[i]->print();
+	}
+}
+
 int main() {
 	std::cout << "Creating shapes..." << std::endl;
 
-	std::cout << "Rectangle :" << std::endl;
 	Rectangle rect("Rectangle", 20.0, 25.0);
-	rect.print();
-
-	std::cout << "Square :" << std::endl;
 	Square sq("Square", 16.0, 16.0);
-	sq.print();
+	Rectangle rect2("Small Rectangle", 10.0, 6.0);
 
-	std::cout << "Polymorphism test:" << std::endl;
-	Rectangle *wsk = &sq;
-	wsk->print();
+	Shape *tab[3];
+	tab[0] = &rect;
+	tab[1] = &sq;
+	tab[2] = &rect2;
+	printTab(tab, 3);
 
 	return 0;
 }
