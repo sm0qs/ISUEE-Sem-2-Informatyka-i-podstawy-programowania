@@ -54,5 +54,34 @@ class Rectangle : public Shape {
 	}
 };
 
+class Square : public Rectangle {
+  protected:
+	static int squareCount;
+
+  public:
+	Square() : Rectangle() { squareCount++; }
+
+	Square(const std::string &name, double perimeter, double area)
+		: Rectangle(name, perimeter, area) {
+		squareCount++;
+	}
+
+	~Square() override { squareCount--; }
+
+	static int getSquareCount() { return squareCount; }
+
+	void print() const override {
+		std::cout << "--- Square Info ---\n";
+		std::cout << "Name: " << name << "\n";
+		std::cout << "Perimeter: " << perimeter << "\n";
+		std::cout << "Area: " << area << "\n";
+		std::cout << "Total Shapes: " << getShapeCount() << "\n";
+		std::cout << "Total Rectangles: " << getRectangleCount() << "\n";
+		std::cout << "Total Squares: " << getSquareCount() << "\n";
+		std::cout << "-------------------\n";
+	}
+};
+
 int Shape::shapeCount = 0;
 int Rectangle::rectangleCount = 0;
+int Square::squareCount = 0;
