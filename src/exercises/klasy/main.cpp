@@ -1,14 +1,6 @@
 #include <fstream>
 #include <iostream>
 
-std::ifstream openFile(const std::string &path) {
-	std::ifstream file(path);
-	if (!file.is_open()) {
-		throw std::string("Failed to open file at: " + path);
-	}
-	return file;
-}
-
 class Date {
   private:
 	unsigned int year, month, day;
@@ -55,11 +47,10 @@ class Car {
 	}
 
 	Car(const std::string path) {
-		std::ifstream file = openFile(path);
-		file >> brand >> model >> year >> mileage;
-		file.close();
 		items++;
 		inspections = new Date[20];
+
+		readFromFile(path);
 	}
 
 	Car(const Car &other)
@@ -112,6 +103,39 @@ class Car {
 		std::cout << "| Mileage: " << mileage << std::endl;
 		std::cout << "\\----------------------------" << std::endl;
 	}
+
+	void saveToFile(const std::string &path) const {
+		std::ofstream file(path);
+		if (!file.is_open()) {
+			throw std::string("Failed to open file for writing at: " + path);
+		}
+
+		file << brand << std::endl;
+		file << model << std::endl;
+		file << year << std::endl;
+		file << mileage << std::endl;
+
+		for (int i = 0; i < 20; i++) {
+			file << inspections[i] << std::endl;
+		}
+
+		file.close();
+	}
+
+	void readFromFile(const std::string &path) {
+		std::ifstream file(path);
+		if (!file.is_open()) {
+			throw std::string("Failed to open file at: " + path);
+		}
+
+		file >> brand >> model >> year >> mileage;
+
+		for (int i = 0; i < 20; i++) {
+			file >> inspections[i];
+		}
+
+		file.close();
+	}
 };
 
 int Car::items = 0;
@@ -147,6 +171,7 @@ int main() {
 		car1.setYear(2015);
 		car1.setMileage(150000);
 		car1.printInfo();
+		car1.saveToFile("car1.txt");
 
 		Car car2("Toyota", "Corolla", 2018, 50000);
 		car2.printInfo();
@@ -155,6 +180,11 @@ int main() {
 		createFileIfNotExists(path);
 		Car car3(path);
 		car3.printInfo();
+
+		Car car4 = car1;
+		car4.printInfo();
+
+		std::cout << "Current number of Car objects in memory: " << Car::getItems() << std::endl;
 
 	} catch (const std::string &e) {
 		std::cerr << "Error: " << e << std::endl;
